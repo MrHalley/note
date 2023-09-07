@@ -1,6 +1,10 @@
 # Windows
 
+[TOC]
 
+
+
+## 常规问题解决方案
 
 [Windows下如何查看某个端口被谁占用 | 菜鸟教程 (runoob.com)](https://www.runoob.com/w3cnote/windows-finds-port-usage.html)
 
@@ -10,31 +14,13 @@
 
 ```bash
 # 以下是常用命令及其解析，也可通过 command /? 到window bash 中查看更加详细的解析
-# 1、@echo off 关闭命令回显
-# 2、rem 注释命令
-# 3、&
-# 4、::
-# 5、setlocal enabledelayedexpansion  endlocal 启用延迟变量扩展
-# 6、set 设置变量 （略）
-# 6.1、set /p 读取用户输入命令  set /p variable=prompt_message
-# 6.2、set /a 算术表达式
-# 8、for 循环
-# 9、for /F 循环从文件中读取数据     
-# 10、for /L 循环用于遍历一定范围内的整数
-# 11、变量解析
 ```
 
+###  1、@echo off 关闭了命令回显
 
 
 
-
-
-
-> 1、@echo off 关闭了命令回显
-
-
-
-> 2、rem 注释
+###  2、rem 注释
 
 ```bash
 @echo off
@@ -48,7 +34,7 @@ echo This is another line
 
 
 
-> 3、&
+###  3、&
 
 在 Windows 命令提示符和批处理脚本中，`&` 是一个用于连接多个命令的命令分隔符。它允许在一行上执行多个命令，而不必换行。
 
@@ -71,7 +57,7 @@ World
 
 
 
-> 4、`::`  作为注释标记：
+###  4、`::`  作为注释标记：
 
 在批处理脚本中，`::` 用于添加注释。与 `rem` 关键字一样，`::` 后面的内容被视为注释，不会被执行。例如：
 
@@ -86,7 +72,7 @@ echo This is a command
 
 
 
-> 5、setlocal enabledelayedexpansion 启用延迟变量扩展
+###  5、setlocal enabledelayedexpansion 启用延迟变量扩展
 
 `setlocal enabledelayedexpansion` 是一个 Windows 批处理脚本命令，用于启用延迟变量扩展。它允许你在脚本中使用 `!` 来引用变量，并确保变量在运行时而不是解析时进行扩展。这在需要在循环或代码块中引用动态变量值时特别有用。
 
@@ -125,10 +111,10 @@ endlocal
 
 `endlocal`： Windows 批处理脚本在退出时会自动执行 `endlocal` 命令来关闭通过 `setlocal` 命令创建的局部环境。这确保了在脚本结束时，局部环境中的变量和资源得到正确的清理和释放。
 
+### 6、set 设置变量
 
 
-
-> 6.1、set /p 等待用户输入
+####   6.1、set /p 等待用户输入
 
  `set /p` 是 Windows 批处理脚本中用来读取用户输入的命令。它允许脚本暂停执行，等待用户输入一段文本，并将用户输入的文本保存到一个指定的变量中。这使得批处理脚本能够与用户进行交互，根据用户的输入进行不同的操作。
 #下面是 set /p 命令的基本格式：
@@ -138,7 +124,7 @@ set /p variable=prompt_message
 - prompt_message：在等待用户输入时显示给用户的提示消息。
 
 
-> 6.2、set /a 算术表达式
+####  6.2、set /a 算术表达式
 
  ```bash
 @echo off
@@ -158,17 +144,35 @@ echo Quotient: %quotient%
 
 
 
-> 8、for 循环
+###  7、for 循环
 
 格式
 
 ```bash
 for %%variable in (set) do command
+
+另外，FOR 变量参照的替换已被增强。你现在可以使用下列
+选项语法:
+%~I          - 删除任何引号(")，扩展 %I
+%~fI        - 将 %I 扩展到一个完全合格的路径名
+%~dI        - 仅将 %I 扩展到一个驱动器号
+%~pI        - 仅将 %I 扩展到一个路径
+%~nI        - 仅将 %I 扩展到一个文件名
+%~xI        - 仅将 %I 扩展到一个文件扩展名
+%~sI        - 扩展的路径只含有短名
+%~aI        - 将 %I 扩展到文件的文件属性
+%~tI        - 将 %I 扩展到文件的日期/时间
+%~zI        - 将 %I 扩展到文件的大小
+%~$PATH:I   - 查找列在路径环境变量的目录，并将 %I 扩展
+              到找到的第一个完全合格的名称。如果环境变量名
+              未被定义，或者没有找到文件，此组合键会扩展到
+              空字符串
 ```
 
 
 
-> 9、for /F  循环用于从文件中逐行读取数据
+
+###  8、for /F  循环用于从文件中逐行读取数据
 
 格式：
 
@@ -197,11 +201,15 @@ for /F "tokens=1,2 delims=," %%a in (data.txt) do (
   echo First token: %%a
   echo Second token: %%b
 )
+
+FOR /F "eol=; tokens=2,3* delims=, " %i in (myfile.txt) do @echo %i %j %k
+
+# 会分析 myfile.txt 中的每一行，忽略以分号打头的那些行，将每行中的第二个和第三个符号传递给 for 函数体，用逗号和/或空格分隔符号。请注意，此 for 函数体的语句引用 %i 来获得第二个符号，引用 %j 来获得第三个符号，引用 %k来获得第三个符号后的所有剩余符号。对于带有空格的文件名，你需要用双引号将文件名括起来。为了用这种方式来使用双引号，还需要使用 usebackq 选项，否则，双引号会被理解成是用作定义某个要分析的字符串的。
 ```
 
   
 
-> 10、for /L 循环用于遍历一定范围内的整数
+###  9、for /L 循环用于遍历一定范围内的整数
 
 
 
@@ -222,6 +230,15 @@ for /L %%i in (1,1,5) do (
     echo Loop iteration %%i
 )
 ```
+
+
+
+### 10、变量解析
+
+- %1、%2  ...  %n：获取执行脚本或者脚本中代码块的第n个参数
+- %variable%:  获取set variable=xx  的变量
+- !variable!:  启用延迟变量拓展时获取变量的方式
+- %%variable:  for循环中用的变量格式
 
 ### 场景脚步
 
@@ -256,6 +273,11 @@ for /L %%i in (1,1,%1) do (
 echo 程序已执行完毕！按下任意键退出...
 pause
 REM 注意：运行此脚本默认所有节点都是edit模式，如果需要动态获取edit的数量，需要读取./git/rebase-merge/git-rebase-todo文件，目前没有此需求就没有写那么复杂了
+
+
+
+
+
 ```
 git-rebase-todo文件示例：
 ```
@@ -288,9 +310,106 @@ edit c7762bd 议价管理列表
 # However, if you remove everything, the rebase will be aborted.
 ```
 
-> 11、变量解析
 
-- %1、%2  ...  %n：获取执行脚本或者脚本中代码块的第n个参数
-- %variable%:  获取set variable=xx  的变量
-- !variable!:  启用延迟变量拓展时获取变量的方式
-- %%variable:  for循环中用的变量格式
+
+
+
+#### 遍历文件
+
+```bash
+@echo off
+
+rem 调用递归遍历子例程
+call :ProcessFolder "%parent_folder%"
+
+echo 程序已执行完毕！按下任意键退出...
+pause
+goto :eof
+
+:ProcessFolder
+rem 遍历当前文件夹中的文件
+for %%f in ("%~1\*.*") do (
+    echo File found: %%~nxf
+)
+
+rem 遍历当前文件夹中的子文件夹
+for /d %%d in ("%~1\*") do (
+    echo Folder found: %%d
+    call :ProcessFolder "%%~d"
+)
+
+goto :eof
+```
+
+
+
+#### 批量向项目中.gitignore文件添加添加或删除文件的脚本
+
+> addContent.bat
+
+```bash
+@echo off
+
+setlocal enabledelayedexpansion
+rem 设置要追加的内容
+set content=*.iml
+rem 设置要遍历的父文件夹路径
+set parent_folder=D:\Java\Project\work\erong
+
+rem 使用 for /d 遍历文件夹
+for /d %%d in ("%parent_folder%\ldw-*") do (
+    for %%f in ("%%d\*.gitignore") do (
+        echo %%d
+        echo File: %%f
+        REM 添加文本出错时，调用删除脚本
+        REM call deleteContent.bat %%d !content!
+        echo.>>"%%f"
+        echo %content%>>"%%f"
+    )
+)
+
+endlocal
+
+echo 程序已执行完毕！按下任意键退出...
+pause
+```
+
+
+
+> deleteContent.bat
+
+```bash
+@echo off
+rem %1 要修改文件的目录  %2 要删除的内容（删除包含内容的行）
+
+setlocal enabledelayedexpansion
+
+rem 设置要处理的文件路径
+set file_path=%~1\.gitignore
+echo file_path: %file_path%
+
+rem 设置要删除的内容
+set content_to_delete=%~2
+
+rem 临时文件
+set tempfile=%1\tempfile.txt
+echo tempfile: %tempfile%
+
+rem 创建临时文件
+type nul > %tempfile%
+
+rem 读取文件内容并删除指定内容
+(for /f "usebackq delims=" %%a in ("%file_path%") do (
+    set "line=%%a"
+    set "modified_line=!line!"
+    echo !modified_line!|findstr /v /c:"!content_to_delete!" >nul
+    if !errorlevel!==0 echo !modified_line!
+)) >%tempfile%
+
+rem 将修改后的内容写回到原文件
+move /y %tempfile% "%file_path%"
+echo File content modified.
+REM pause
+
+```
+
