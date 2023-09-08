@@ -12,6 +12,12 @@
 
 3.选中指定内容 alt+j
 
+4.查看maven依赖路径
+
+![](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/notes/20230908151513.png)
+
+![](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/notes/20230908151404.png)
+
 
 
 ## 解决问题
