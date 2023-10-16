@@ -36,7 +36,7 @@
 
 15. [一次显著的MySQL大表分页查询优化，从2.35s到18ms](https://mp.weixin.qq.com/s/s16EYc0-4It0NfioXMjz3w)
 
-16. [再有人问你什么是分库分表，直接把这篇文章发给他](https://mp.weixin.qq.com/s/wYXs7gsID8a9ahJKsWXJ6w)
+16. [再有人问你什么是分库分表，直接把这篇文章发给他](https://mp.weixin.qq.com/s?__biz=MzkyMzU5Mzk1NQ==&mid=2247506650&idx=1&sn=c24ac95f5ba2baaf3bee51d4a4482dc6&source=41#wechat_redirect)
 
 17. [Mysql中join的那些事](https://mp.weixin.qq.com/s/0Li0w_9W7U5jPcAU92XZCg)
 
