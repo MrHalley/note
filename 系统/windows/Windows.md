@@ -240,6 +240,29 @@ for /L %%i in (1,1,5) do (
 - !variable!:  启用延迟变量拓展时获取变量的方式
 - %%variable:  for循环中用的变量格式
 
+
+
+### 11、转义 `^` `%%`
+
+在 Windows 批处理脚本中，转义字符通常是 `^`（插入符号）。它用于告诉脚本解释器不要解释后续字符，而是将其视为普通字符。这在处理特殊字符或空格时非常有用。
+
+```bash
+@echo off
+setlocal enabledelayedexpansion
+rem 修改的节点数
+set end=4
+
+rem 执行 git log 命令并将输出传递给脚本
+for /f "tokens=*" %%a in ('git log -n 4 --pretty^="%%H"') do (
+    set commit_info=%%a
+    echo Commit Info: !commit_info!
+    rem 在这里可以对 commit_info 进行进一步处理
+)
+endlocal    
+echo 程序已执行完毕！按下任意键退出...
+pause
+```
+
 ### 场景脚步
 
 #### 修改最近历史节点提交时间
@@ -411,5 +434,66 @@ move /y %tempfile% "%file_path%"
 echo File content modified.
 REM pause
 
+```
+
+
+
+#### cherry-pick重新提交脚本
+
+> 批量cherry-pick
+
+```
+@echo off
+setlocal enabledelayedexpansion
+rem 设置编码utf-8以便正确解码git log的中文提交信息
+chcp 65001
+
+rem cherry-pick的分支
+set target_branch=temp
+
+rem 批量cherry-pick 
+
+rem 修改的节点数 
+set /p "start=请输入开始的节点数"
+rem cherry-pick节点的个数
+set count=1
+set current=1
+
+rem 在 Windows 命令行中设置字符编码为 UTF-8
+rem 依次从另一分支的第start条记录开始cherry-pick到当前分支,并重新提交
+for /f "tokens=1,2" %%a in ('git log -n !start! --reverse --pretty^="%%H %%s" %target_branch%') do (
+    echo %%a %%b
+    if !current! leq !count! (
+        echo cherry-pick此节点并重新提交到当前分支
+        git cherry-pick -n %%a
+        git commit -m %%b
+    )
+    set /a current += 1
+)
+endlocal    
+echo 程序已执行完毕！按下任意键退出...
+pause
+
+```
+
+> 单次cherry-pick
+
+```bash
+@echo off
+setlocal enabledelayedexpansion
+chcp 65001
+
+set /p "commit_hash=cherry-pick的提交hash编码:"
+
+rem 单次cherry-pick
+for /f "tokens=1,2" %%a in ('git log -n 1 !commit_hash! --pretty^="%%H %%s"') do (
+    echo %%a %%b
+    echo cherry-pick此节点并重新提交到当前分支
+    git cherry-pick -n %%a
+    echo commit
+    git commit -m %%b
+)
+echo 程序已执行完毕！按下任意键退出...
+pause
 ```
 
