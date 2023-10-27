@@ -483,15 +483,52 @@ pause
 setlocal enabledelayedexpansion
 chcp 65001
 
-set /p "commit_hash=cherry-pick的提交hash编码:"
 
-rem 单次cherry-pick
-for /f "tokens=1,2" %%a in ('git log -n 1 !commit_hash! --pretty^="%%H %%s"') do (
-    echo %%a %%b
-    echo cherry-pick此节点并重新提交到当前分支
-    git cherry-pick -n %%a
-    echo commit
-    git commit -m %%b
+set /p "module=模块名："
+set /p "branch_name=分支名："
+set /p "reset_count=修改节点数："
+echo 当前模块 !module!
+echo 目标分支 !branch_name!
+
+for /L %%i in (1,1,!reset_count!) do (
+    
+    set /p "commit_hash=cherry-pick的提交hash编码(输入exit退出,输入module查看模块名):"
+    if "!commit_hash!"=="module" (
+        echo !module!
+        set /p "commit_hash=cherry-pick的提交hash编码(输入exit退出):"
+    )
+   
+    if "!commit_hash!"=="exit" (
+        REM 终止rebase
+        echo Exiting ...
+        REM 退出后会自动执行endlocal来清理局部变量
+        exit /b
+    )
+    
+    rem 单次cherry-pick
+    for /f "tokens=1,2" %%a in ('git log -n 1 !commit_hash! --pretty^="%%H %%s"') do (
+        echo %%a %%b
+        echo cherry-pick此节点并重新提交到指定分支
+        
+        rem 获取当前分支名称
+        for /f "tokens=*" %%a in ('git branch --show-current') do (
+            set current_branch_name=%%a
+        )
+        rem 当前分支不是目标分支
+        if !current_branch_name! == !branch_name! (
+            git cherry-pick -n %%a
+            echo commit
+            git commit -m %%b
+        ) else (
+            echo 当前所在分支!current_branch_name!,切换分支!branch_name!
+            git checkout !branch_name!
+            git cherry-pick -n %%a
+            echo commit
+            git commit -m %%b
+            git checkout !current_branch_name!
+        )
+    )
+    
 )
 echo 程序已执行完毕！按下任意键退出...
 pause
