@@ -55,3 +55,21 @@
 ## 5.实用篇
 
 1. [MySQL 大批量插入，如何过滤掉重复数据？ (qq.com)](https://mp.weixin.qq.com/s/r-5LmDLmJaDeKx91Y_Sg0w)
+
+## Sql
+
+> 分组查询第二条数据
+
+```sql
+SELECT *
+FROM (
+    SELECT *,
+        IF(@last_id = BID_FAIR_ID, @rownum := @rownum + 1, @rownum := 1) AS rn, -- 判断 当前id与@last_id是否相等，不相等rank为1，相等时rank加1，
+        @last_id := BID_FAIR_ID
+    FROM (SELECT @rownum := 0, @last_id := '') vars, BID_TRADE_APPLY_LOG -- 声明两个变量@rownum及@last_id，并初始化
+    ORDER BY BID_FAIR_ID, CREATE_TIME DESC
+) AS ranked
+WHERE rn = 2;
+
+```
+
