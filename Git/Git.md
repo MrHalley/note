@@ -30,3 +30,16 @@ and run me again.  I am stopping in case you still have something
 valuable there.
 ```
 
+
+
+## 常用命令记录
+
+```bash
+# 移动分支到指定节点
+git branch -f branch_name commit_id
+```
+
+
+
+
+
