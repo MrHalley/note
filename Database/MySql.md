@@ -40,6 +40,8 @@
 
 17. [Mysql中join的那些事](https://mp.weixin.qq.com/s/0Li0w_9W7U5jPcAU92XZCg)
 
+18. [MySQL中，21个写SQL的好习惯](https://mp.weixin.qq.com/s/l7kh5yL6UHZrX7oqp-0Ubg)
+
     ​
 
 ## 3.日志
