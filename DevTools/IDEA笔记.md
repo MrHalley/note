@@ -18,7 +18,7 @@
 
 ![](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/notes/20230908151404.png)
 
-
+5. ctrl_shift_u  选中英文大小写转换
 
 ## 解决问题
 
