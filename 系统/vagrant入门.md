@@ -47,7 +47,18 @@ config.vm.network "private_network", ip: "192.168.57.10"
 
 # vmware中配置了固定Ip后，xshell连不上虚拟机解决步骤
 # 可在Vmware->编辑->虚拟网络编辑器中看到子网ip为192.168.56.0的网卡Vmnet2，在Vmware->虚拟机->设置中找到网络适配器2，配置成自定义的Vmnet2,然后在计算机“网络和Internet设置”中找到Vmnet2的网络，修改适配器选项，TCP/IPV4 ->属性，使用下面的ip地址(ip地址：192.168.56.1  子网掩码：255.255.255.0)确定即可，可参考virtualbox对应的网卡配置
+
+#vmware克隆后换IP地址
+/etc/sysconfig/network-scripts/ifcfg-eth1
+sudo systemctl restart network
 ```
 
 
+
+> 配置阿里云yum源
+
+```bash
+# 下载对应系统版本的阿里云yum源
+[root@hzk /]# wget -O /etc/yum.repos.d/CentOs-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+```
 
